@@ -4,7 +4,7 @@
 
 define e = Character("Eileen")
 define n = Character("Narrador")
-
+default a = 3
 
 # El juego comienza aquí.
 
@@ -27,6 +27,19 @@ label start:
     e "Has creado un nuevo juego Ren'Py."
 
     n "Hola Yorch"
+
+
+
+    menu:
+        "Yorch es Gay?":
+            call label_with_params(5)
+        "Nomas le gustan los femboys":
+            jump label_without_params
+    jump start
+
+label label_with_params(a):
+label label_without_params:
+    e "a = [a]" # displays 5 or 3 depending on what path was taken
 
     e "Añade una historia, imágenes y música, ¡y puedes presentarlo al mundo!"
 
