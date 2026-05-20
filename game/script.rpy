@@ -41,21 +41,21 @@ label start:
     show ejemplocrab
     n "Hola [mc]"
     "Yorch es gay?"
+
     menu:
-        "Yorch es Gay":
-            call label_with_params(5)
-        "Nomas le gustan los femboys":
-            call label_without_params
+        "Si y mucho.":
+            jump si
+        "Solo le gustan los femboys.":
+            jump fm
 
-    e "Añade una historia, imágenes y música, ¡y puedes presentarlo al mundo!"
+label si:
+    n "Ya sabiamos."
+    jump xd
 
+label fm:
+    n "Y el mejor de ellos."
+    jump xd
+
+label xd:
     # Finaliza el juego:
-    return
-
-label label_with_params(a_param):
-    e "a = [a_param]"
-    return
-
-label label_without_params:
-    e "a = [a]"
     return
