@@ -37,6 +37,7 @@ label start:
     $ persistent.mc = mc
     p "Mi nombre es [mc]. y soy el encantador de femboys"
     scene black with fade
+    scene playa with dissolve
     show ejemplocrab
     n "Hola [mc]"
     "Yorch es gay?"
