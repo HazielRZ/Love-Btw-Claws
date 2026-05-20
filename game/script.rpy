@@ -20,7 +20,7 @@ label start:
     # defecto. Es posible añadir un archivo en el directorio 'images' con el
     # nombre "bg room.png" or "bg room.jpg" para que se muestre aquí.
 
-    scene bg room
+    scene black
 
     # Muestra un personaje: Se usa un marcador de posición. Es posible
     # reemplazarlo añadiendo un archivo llamado "eileen happy.png" al directorio
@@ -37,8 +37,9 @@ label start:
     $ persistent.mc = mc
     p "Mi nombre es [mc]. y soy el encantador de femboys"
     scene black with fade
-    n "Hola Yorch"
-
+    show ejemplocrab
+    n "Hola [mc]"
+    "Yorch es gay?"
     menu:
         "Yorch es Gay":
             call label_with_params(5)
