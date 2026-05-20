@@ -20,7 +20,8 @@ label start:
     # reemplazarlo añadiendo un archivo llamado "eileen happy.png" al directorio
     # 'images'.
 
-    show eileen happy
+    show eileen happy at left
+    show uma-musume-fine-motion at right
 
     # Presenta las líneas del diálogo.
 
@@ -31,7 +32,7 @@ label start:
 
 
     menu:
-        "Yorch es Gay?":
+        "Yorch es Gay":
             call label_with_params(5)
         "Nomas le gustan los femboys":
             jump label_without_params
