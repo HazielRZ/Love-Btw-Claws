@@ -38,7 +38,7 @@ label start:
     p "Mi nombre es [mc]. y soy el encantador de femboys"
     scene black with fade
     scene playa with dissolve
-    show ejemplocrab
+    show maru-chan at truecenter
     n "Hola [mc]"
     "Yorch es gay?"
 
