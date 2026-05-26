@@ -2,7 +2,8 @@
 
 # Declara los personajes usados en el juego como en el ejemplo:
 
-define e = Character("Eileen")
+define m = Character("Maru-chan")
+define mt = Character("Maru-chan", what_prefix="({i}", what_suffix="{/i})", color="#faa046") #pensando
 define n = Character("Narrador")
 default a = 3
 define p = Character("[mc]", color="#faa046")
@@ -20,7 +21,7 @@ label start:
     # defecto. Es posible añadir un archivo en el directorio 'images' con el
     # nombre "bg room.png" or "bg room.jpg" para que se muestre aquí.
 
-    scene black
+    scene station
 
     # Muestra un personaje: Se usa un marcador de posición. Es posible
     # reemplazarlo añadiendo un archivo llamado "eileen happy.png" al directorio
@@ -39,25 +40,27 @@ label start:
     p "No tenia las mas minimas ganas de seguir con su negocio pero sus deudas por las  apuestas de caballos ascienden a los 3 Millones de sheintavos"
     p "Nunca logramos hacerlo entender que los caballitos de mar no competian en Nakayama y que su caballo favorito Gentildonna habia muerto hace 201 anios en el 2025"
     p "Bueno parece que ya llegamos a Nueva Veracru, me apurare antes de que aparezcan los mayates."
-    scene black with fade
-    scene playa with dissolve
+    scene station2with dissolve
     show maru-chan at truecenter
- 
+    mt "Jaibas, voy tarde para llegar a la escuela"
+    p "Parece que tengo que caminar 5km desde esta estacion"
+    "Chocas con una chica"
 
-    "Yorch es gay?"
+    "Que haces?"
 
     menu:
-        "Si y mucho.":
+        "Ayudarla a recoger tus cosas y disculparte.":
             jump si
-        "Solo le gustan los femboys.":
+        "Solo me gustan los femboys y no le ayudo.":
             jump fm
 
 label si:
-    n "Ya sabiamos."
+     "Le ayudas a recoger sus cosas."
+     m "lo siento iba distraida"
     jump xd
 
 label fm:
-    n "Y el mejor de ellos."
+    n "Un fanatico de los autos con palanca."
     jump xd
 
 label xd:
