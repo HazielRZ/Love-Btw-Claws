@@ -1,4 +1,4 @@
-﻿################################################################################
+################################################################################
 ## Inicialización
 ################################################################################
 
@@ -27,8 +27,6 @@ style gui_text:
 
 style button:
     properties gui.button_properties("button")
-
-define gui.button_text_outlines = [ (3, "#ffffff", 0, 0) ]
 
 style button_text is gui_text:
     properties gui.text_properties("button")
@@ -88,12 +86,7 @@ style frame:
 ##
 ## La pantalla de diálogo muestra el diálogo al jugador. Acepta dos parámetros,
 ## 'who' y 'what', es decir, el nombre del personaje que habla y el texto que ha
-## de ser mostrado respectivamente. (El parámetro 'who' puede ser 'None' si no
-## se da ningún nombre.)
-##
-## Esta pantalla debe crear un texto visualizable con id "what" que Ren'Py usa
-## para gestionar la visualización del texto. Puede crear también visualizables
-## con id "who" y id "window" para aplicar propiedades de estilo.
+## de ser mostrado respectivamente.
 ##
 ## https://www.renpy.org/doc/html/screen_special.html#say
 
@@ -112,8 +105,7 @@ screen say(who, what):
         text what id "what"
 
 
-    ## Si hay una imagen lateral, la muestra encima del texto. No la muestra en
-    ## la variante de teléfono - no hay lugar.
+    ## Si hay una imagen lateral, la muestra encima del texto.
     if not renpy.variant("small"):
         add SideImage() xalign 0.0 yalign 1.0
 
@@ -165,12 +157,6 @@ style say_dialogue:
 
 ## Pantalla de introducción de texto ###########################################
 ##
-## Pantalla usada para visualizar 'renpy.input'. El parámetro 'prompt' se usa
-## para pasar el texto presentado.
-##
-## Esta pantalla debe crear un displayable 'input' con id "input" para aceptar
-## diversos parámetros de entrada.
-##
 ## https://www.renpy.org/doc/html/screen_special.html#input
 
 screen input(prompt):
@@ -200,10 +186,6 @@ style input:
 
 ## Pantalla de menú ############################################################
 ##
-## Esta pantallla presenta las opciones internas al juego de la sentencia
-## 'menu'. El parámetro único, 'items', es una lista de objetos, cada uno los
-## campos 'caption' y 'action'.
-##
 ## https://www.renpy.org/doc/html/screen_special.html#choice
 
 screen choice(items):
@@ -211,7 +193,20 @@ screen choice(items):
 
     vbox:
         for i in items:
-            textbutton i.caption action i.action
+            textbutton i.caption action i.action at choice_button_appear
+
+
+## Animación de aparición para botones de opción.
+transform choice_button_appear:
+    alpha 0.0 yoffset 20
+    linear 0.4 alpha 1.0 yoffset 0
+
+## Animación de hover para botones de opción.
+transform choice_button_hover:
+    on hover:
+        easein 0.15 zoom 1.02
+    on idle:
+        easeout 0.15 zoom 1.0
 
 
 style choice_vbox is vbox
@@ -230,11 +225,12 @@ style choice_button is default:
 
 style choice_button_text is default:
     properties gui.text_properties("choice_button")
+    outlines [ (2, "#0D1B2A", 0, 0) ]
 
 
 ## Pantalla de menú rápido #####################################################
 ##
-## El menú rápido se presenta en el juego para ofrecer fácil acceso a los menus
+## El menú rápido se presenta en el juego para ofrecer fácil acceso a los menús
 ## externos al juego.
 
 screen quick_menu():
@@ -258,8 +254,7 @@ screen quick_menu():
             textbutton _("Prefs.") action ShowMenu('preferences')
 
 
-## Este código asegura que la pantalla 'quick_menu' se muestra en el juego,
-## mientras el jugador no haya escondido explícitamente la interfaz.
+## Este código asegura que la pantalla 'quick_menu' se muestra en el juego.
 init python:
     config.overlay_screens.append("quick_menu")
 
@@ -278,10 +273,11 @@ style quick_button:
 
 style quick_button_text:
     properties gui.text_properties("quick_button")
+    outlines [ (1, "#0D1B2A", 0, 0) ]
 
 
 ################################################################################
-## Principal y Pantalla de menu del juego.
+## Principal y Pantalla de menú del juego.
 ################################################################################
 
 ## Pantalla de navegación ######################################################
@@ -335,6 +331,14 @@ screen navigation():
             textbutton _("Salir") action Quit(confirm=not main_menu)
 
 
+## Animación de hover para botones de navegación.
+transform nav_button_hover:
+    on hover:
+        easein 0.2 xoffset 8
+    on idle:
+        easeout 0.2 xoffset 0
+
+
 style navigation_button is gui_button
 style navigation_button_text is gui_button_text
 
@@ -344,6 +348,10 @@ style navigation_button:
 
 style navigation_button_text:
     properties gui.text_properties("navigation_button")
+    hover_color gui.hover_color
+    selected_color gui.selected_color
+    insensitive_color gui.insensitive_color
+    outlines [ (2, "#0D1B2A80", 0, 0) ]
 
 
 ## Pantalla del menú principal #################################################
@@ -354,17 +362,16 @@ style navigation_button_text:
 
 screen main_menu():
 
-    ## Esto asegura que cualquier otra pantalla de menu es remplazada.
+    ## Esto asegura que cualquier otra pantalla de menú es remplazada.
     tag menu
 
     add gui.main_menu_background
 
-    ## Este marco vacío oscurece el menu principal.
+    ## Este marco oscurece el lado izquierdo del menú principal.
     frame:
         style "main_menu_frame"
 
-    ## La sentencia 'use' incluye otra pantalla dentro de esta. El contenido
-    ## real del menú principal está en la pantalla de navegación.
+    ## La sentencia 'use' incluye la pantalla de navegación.
     use navigation
 
     if gui.show_name:
@@ -377,6 +384,12 @@ screen main_menu():
 
             text "[config.version]":
                 style "main_menu_version"
+
+
+## Animación de entrada del menú principal.
+transform main_menu_fade_in:
+    alpha 0.0
+    linear 0.6 alpha 1.0
 
 
 style main_menu_frame is empty
@@ -403,19 +416,18 @@ style main_menu_text:
 
 style main_menu_title:
     properties gui.text_properties("title")
+    outlines [ (3, "#0D1B2A", 0, 0), (1, "#2E86AB80", 2, 2) ]
 
 style main_menu_version:
     properties gui.text_properties("version")
+    outlines [ (2, "#0D1B2A", 0, 0) ]
 
 
 ## Pantalla del menú del juego #################################################
 ##
-## Esto distribuye la estructura de base del menú del juego. Es llamado con el
-## título de la pantalla y presenta el fondo, el título y la navegación.
+## Esto distribuye la estructura de base del menú del juego.
 ##
-## El parámetro 'scroll' puede ser 'None', "viewport" o "vpgrid". Se usa esta
-## pantalla con uno o más elementos, que son transcluídos (situados) en su
-## interior.
+## https://www.renpy.org/doc/html/screen_special.html#game-menu
 
 screen game_menu(title, scroll=None, yinitial=0.0, spacing=0):
 
@@ -533,6 +545,7 @@ style game_menu_label_text:
     size 75
     color gui.accent_color
     yalign 0.5
+    outlines [ (2, "#0D1B2A", 0, 0) ]
 
 style return_button:
     xpos gui.navigation_xpos
@@ -542,19 +555,12 @@ style return_button:
 
 ## Pantalla 'acerca de' ########################################################
 ##
-## Esta pantalla da información sobre los créditos y el copyright del juego y de
-## Ren'Py.
-##
-## No hay nada especial en esta pantalla y por tanto sirve también como ejemplo
-## de cómo hacer una pantalla personalizada.
+## Esta pantalla da información sobre los créditos y el copyright del juego.
 
 screen about():
 
     tag menu
 
-    ## Esta sentencia 'use' incluye la pantalla 'game_menu' dentro de esta. El
-    ## elemento 'vbox' se incluye entonces dentro del 'viewport' al interno de
-    ## la pantalla 'game_menu'.
     use game_menu(_("Acerca de"), scroll="viewport"):
 
         style_prefix "about"
@@ -581,12 +587,8 @@ style about_label_text:
 
 ## Pantallas de carga y grabación ##############################################
 ##
-## Estas pantallas permiten al jugador grabar el juego y cargarlo de nuevo. Como
-## comparten casi todos los elementos, ambas están implementadas en una tercera
-## pantalla: 'file_slots'.
-##
-## https://www.renpy.org/doc/html/screen_special.html#save https://
-## www.renpy.org/doc/html/screen_special.html#load
+## https://www.renpy.org/doc/html/screen_special.html#save
+## https://www.renpy.org/doc/html/screen_special.html#load
 
 screen save():
 
@@ -614,8 +616,7 @@ screen file_slots(title):
             ## botones.
             order_reverse True
 
-            ## El nombre de la pagina, se puede editar haciendo clic en el
-            ## botón.
+            ## El nombre de la página.
             button:
                 style "page_label"
 
@@ -729,9 +730,6 @@ style slot_button_text:
 
 ## Pantalla de preferencias ####################################################
 ##
-## La pantalla de preferencias permite al jugador configurar el juego a su
-## gusto.
-##
 ## https://www.renpy.org/doc/html/screen_special.html#preferences
 
 screen preferences():
@@ -760,8 +758,7 @@ screen preferences():
                     textbutton _("Tras elecciones") action Preference("after choices", "toggle")
                     textbutton _("Transiciones") action InvertSelected(Preference("transitions", "toggle"))
 
-                ## Aquí se pueden añadir 'vboxes' adicionales del tipo
-                ## "radio_pref" o "check_pref" para nuevas preferencias.
+                ## Aquí se pueden añadir 'vboxes' adicionales.
 
             null height (4 * gui.pref_spacing)
 
@@ -888,16 +885,13 @@ style slider_vbox:
 
 ## Pantalla de historial #######################################################
 ##
-## Esta pantalla presenta el historial de diálogo al jugador, almacenado en
-## '_history_list'.
-##
 ## https://www.renpy.org/doc/html/history.html
 
 screen history():
 
     tag menu
 
-    ## Evita la predicción de esta pantalla, que podría ser demasiado grande.
+    ## Evita la predicción de esta pantalla.
     predict False
 
     use game_menu(_("Historial"), scroll=("vpgrid" if gui.history_height else "viewport"), yinitial=1.0, spacing=gui.history_spacing):
@@ -978,9 +972,7 @@ style history_label_text:
 
 ## Pantalla de ayuda ###########################################################
 ##
-## Una pantalla que da información sobre el uso del teclado y el ratón. Usa
-## otras pantallas con el contenido de la ayuda ('keyboard_help', 'mouse_help',
-## y 'gamepad_help').
+## Una pantalla que da información sobre el uso del teclado y el ratón.
 
 screen help():
 
@@ -1145,9 +1137,6 @@ style help_label_text:
 
 ## Pantalla de confirmación ####################################################
 ##
-## Ren'Py llama la pantalla de confirmación para presentar al jugador preguntas
-## de sí o no.
-##
 ## https://www.renpy.org/doc/html/screen_special.html#confirm
 
 screen confirm(message, yes_action, no_action):
@@ -1191,7 +1180,7 @@ style confirm_button is gui_medium_button
 style confirm_button_text is gui_medium_button_text
 
 style confirm_frame:
-    background Frame([ "gui/confirm_frame.png", "gui/frame.png"], gui.confirm_frame_borders, tile=gui.frame_tile)
+    background Frame("gui/frame.png", gui.confirm_frame_borders, tile=gui.frame_tile)
     padding gui.confirm_frame_borders.padding
     xalign .5
     yalign .5
@@ -1208,9 +1197,6 @@ style confirm_button_text:
 
 
 ## Pantalla del indicador de salto #############################################
-##
-## La pantalla de indicador de salto se muestra para indicar que se está
-## realizando el salto.
 ##
 ## https://www.renpy.org/doc/html/screen_special.html#skip-indicator
 
@@ -1265,9 +1251,6 @@ style skip_triangle:
 
 ## Pantalla de notificación ####################################################
 ##
-## La pantalla de notificación muestra al jugador un mensaje. (Por ejemplo, con
-## un guardado rápido o una captura de pantalla.)
-##
 ## https://www.renpy.org/doc/html/screen_special.html#notify-screen
 
 screen notify(message):
@@ -1283,10 +1266,10 @@ screen notify(message):
 
 transform notify_appear:
     on show:
-        alpha 0
-        linear .25 alpha 1.0
+        alpha 0 yoffset -10
+        linear .25 alpha 1.0 yoffset 0
     on hide:
-        linear .5 alpha 0.0
+        linear .5 alpha 0.0 yoffset -10
 
 
 style notify_frame is empty
@@ -1303,8 +1286,6 @@ style notify_text:
 
 
 ## Pantalla NVL ################################################################
-##
-## Esta pantalla se usa para el diálogo y los menús en modo NVL.
 ##
 ## https://www.renpy.org/doc/html/screen_special.html#nvl
 
@@ -1330,8 +1311,7 @@ screen nvl(dialogue, items=None):
 
             use nvl_dialogue(dialogue)
 
-        ## Presenta el menú, si lo hay. El menú puede ser presentado
-        ## incorrectamente si 'config.narrator_menu' está ajustado a 'True'.
+        ## Presenta el menú, si lo hay.
         for i in items:
 
             textbutton i.caption:
@@ -1421,11 +1401,6 @@ style nvl_button_text:
 
 
 ## Pantalla de globos ##########################################################
-##
-## La pantalla de burbujas se utiliza para mostrar el diálogo al jugador cuando
-## se utilizan burbujas de diálogo. La pantalla de burbujas toma los mismos
-## parámetros que la pantalla "say", debe crear un visualizable con el id de
-## "what", y puede crear visualizables con los ids "namebox", "who", y "window".
 ##
 ## https://www.renpy.org/doc/html/bubble.html#bubble-screen
 
@@ -1522,7 +1497,7 @@ style pref_vbox:
     variant "medium"
     xsize 675
 
-## Ya que puede carecer de ratón, se reempleza el menú rápido con una versión
+## Ya que puede carecer de ratón, se reemplaza el menú rápido con una versión
 ## con menos botones y más grandes, más fáciles de tocar.
 screen quick_menu():
     variant "touch"
