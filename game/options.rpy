@@ -30,7 +30,7 @@ define config.version = "1.0"
 ## Texto situado en la pantalla 'Acerca de' del juego. Sitúa el texto entre
 ## comillas triples y deja una línea en blanco entre párrafos.
 
-define gui.about = __("Created by PonysITM.\n\npto el que lo lea")
+define gui.about = __("Created by PonysITM.\n\npto el que lo lea, test backgrounds https://itsu-saragi.carrd.co")
 
 
 ## Nombre breve del juego para ejecutables y directorios en la distribución.
