@@ -41,11 +41,11 @@ label start:
     p "Nunca logramos hacerlo entender que los caballitos de mar no competian en Nakayama y que su caballo favorito Gentildonna habia muerto hace 201 anios en el 2025"
     p "Bueno parece que ya llegamos a Nueva Veracru, me apurare antes de que aparezcan los mayates."
     scene station2 with dissolve
-    show maru-chan at center
-
+    show maruserious
     mt "Jaibas, voy tarde para llegar a la escuela"
     p "Parece que tengo que caminar 5km desde esta estacion"
     "Chocas con una chica"
+    show marusurprise
 
     "Que haces?"
 
@@ -55,10 +55,11 @@ label start:
         "Solo me gustan los femboys y no le ayudo.":
             jump fm
 
+   show marusad
 label si:
-    "Le ayudas a recoger sus cosas."
-    m "lo siento iba distraida"
-    jump xd
+     "Le ayudas a recoger sus cosas."
+     m "lo siento iba distraida"
+     jump xd
 
 label fm:
     n "Un fanatico de los autos con palanca."
